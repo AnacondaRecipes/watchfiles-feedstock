@@ -20,9 +20,6 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('rust') }}
-    - cargo-bundle-licenses
-    - maturin
-    - python
   host:
     - cargo-bundle-licenses
     - maturin
