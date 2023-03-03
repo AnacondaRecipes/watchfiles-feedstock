@@ -1,7 +1,6 @@
 {% set name = "watchfiles" %}
 {% set version = "0.18.1" %}
 
-
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -12,25 +11,28 @@ source:
 
 build:
   number: 0
+  # maturin is missing on s390x
+  skip: true  # [s390x]
   script:
-    - {{ PYTHON }} -m pip install . -vv
+    - {{ PYTHON }} -m pip install . -vv --no-deps
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
   entry_points:
     - watchfiles = watchfiles.cli:cli
 
-
 requirements:
   build:
-    - python
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - {{ compiler('c') }}
     - {{ compiler('rust') }}
-    - cargo-bundle-licenses
-    - maturin
+    - cargo-bundle-licenses  # [win]
+    - maturin                # [win]
+    - python                 # [win]
   host:
+    - cargo-bundle-licenses
     - maturin
     - pip
     - python
+    - setuptools
+    - wheel
   run:
     - python
     - anyio >=3.0.0,<4
@@ -47,8 +49,13 @@ test:
 about:
   home: https://watchfiles.helpmanual.io
   summary: Simple, modern and high performance file watching and code reload in python.
+  description: |
+    Watchfiles is a simple, modern and high performance file watching and code reload in python.
+    Underlying file system notifications are handled by the Notify rust library.
   dev_url: https://github.com/samuelcolvin/watchfiles
+  doc_url: https://watchfiles.helpmanual.io 
   license: MIT
+  license_family: MIT
   license_file:
     - LICENSE
     - THIRDPARTY.yml
