@@ -13,9 +13,6 @@ build:
   number: 0
   # maturin is missing on s390x.
   skip: true  # [s390x]
-  script:
-    - {{ PYTHON }} -m pip install . -vv --no-deps
-    - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
   entry_points:
     - watchfiles = watchfiles.cli:cli
 
