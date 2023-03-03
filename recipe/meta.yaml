@@ -20,11 +20,12 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('rust') }}
+    - python  # [win]
   host:
     - cargo-bundle-licenses
     - maturin
     - pip
-    - python
+    - python  # [not win]
     - setuptools
     - wheel
   run:
