@@ -1,5 +1,5 @@
 {% set name = "watchfiles" %}
-{% set version = "0.18.1" %}
+{% set version = "0.21.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 4ec0134a5e31797eb3c6c624dbe9354f2a8ee9c720e0b46fc5b7bab472b7c6d4
+  sha256: c76c635fabf542bb78524905718c39f736a98e5ab25b23ec6d4abede1a85a6a3
 
 build:
   number: 0
