@@ -57,7 +57,7 @@ test:
     {% set pytest_skip = pytest_skip + " or non_recursive" %}  # [win]
     {% set pytest_skip = pytest_skip + " or test_rename" %}  # [osx and arm64]
 
-    - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v
+    - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v  # [not linux]
 
 about:
   home: https://watchfiles.helpmanual.io
