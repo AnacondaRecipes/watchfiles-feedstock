@@ -48,8 +48,8 @@ test:
     - watchfiles -h
     # Requires dirty-equals, missing from defaults.
     {% set pytest_ignore = '--ignore="tests/test_cli.py"' %}
-    {% set pytest_ignore = pytest_ignore + '--ignore="tests/test_filters.py"' %}
-    {% set pytest_ignore = pytest_ignore + '--ignore="tests/test_run_process.py"' %}
+    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_filters.py"' %}
+    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_run_process.py"' %}
     {% set pytest_skip = "awatch_interrupt_raise" %}
     {% set pytest_skip = pytest_skip + " or cli_help" %}
     # File path assertion fails on Windows
