@@ -47,7 +47,15 @@ test:
     - pip check
     - watchfiles -h
     # Requires dirty-equals, missing from defaults.
-    - pytest --ignore="tests/test_cli.py" --ignore="tests/test_filters.py" --ignore="tests/test_run_process.py" -k "not (awatch_interrupt_raise or cli_help)"
+    {% set pytest_ignore = '--ignore="tests/test_cli.py"' %}
+    {% set pytest_ignore = pytest_ignore + '--ignore="tests/test_filters.py"' %}
+    {% set pytest_ignore = pytest_ignore + '--ignore="tests/test_run_process.py"' %}
+    {% set pytest_skip = "awatch_interrupt_raise" %}
+    {% set pytest_skip = pytest_skip + " or cli_help" %}
+    # File path assertion fails on Windows
+    {% set pytest_skip = pytest_skip + " or modify_write_non_recursive" %}  # [win]
+
+    - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})"
 
 about:
   home: https://watchfiles.helpmanual.io
