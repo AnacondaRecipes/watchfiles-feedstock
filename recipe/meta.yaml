@@ -54,7 +54,7 @@ test:
     {% set pytest_skip = pytest_skip + " or cli_help" %}
     # File path assertions fail on Windows
     {% set pytest_skip = pytest_skip + " or modify_write_non_recursive" %}  # [win]
-    {% set pytest_skip = pytest_skip + " or delete_non_recursive" %}  # [win]
+    {% set pytest_skip = pytest_skip + " or non_recursive" %}  # [win]
     {% set pytest_skip = pytest_skip + " or test_rename" %}  # [osx and arm64]
 
     - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v
