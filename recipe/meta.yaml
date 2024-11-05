@@ -33,13 +33,21 @@ requirements:
     - anyio >=3.0.0
 
 test:
+  source_files:
+    - tests
+    - pyproject.toml
   requires:
     - pip
+    - pytest
+    - pytest-timeout
+    - pytest-mock
   imports:
     - watchfiles
   commands:
     - pip check
     - watchfiles -h
+    # Requires dirty-equals, missing from defaults.
+    - pytest --ignore="tests/test_cli.py" --ignore="tests/test_filters.py" --ignore="tests/test_run_process.py" -k "not (awatch_interrupt_raise or cli_help)"
 
 about:
   home: https://watchfiles.helpmanual.io
