@@ -52,12 +52,7 @@ test:
     {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_run_process.py"' %}
     {% set pytest_skip = "awatch_interrupt_raise" %}
     {% set pytest_skip = pytest_skip + " or cli_help" %}
-    # File path assertions fail on Windows
-    {% set pytest_skip = pytest_skip + " or modify_write_non_recursive" %}  # [win]
-    {% set pytest_skip = pytest_skip + " or non_recursive" %}  # [win]
-    {% set pytest_skip = pytest_skip + " or test_rename" %}  # [osx and arm64]
-
-    - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v  # [not linux]
+    - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v
 
 about:
   home: https://watchfiles.helpmanual.io
