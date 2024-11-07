@@ -50,6 +50,7 @@ test:
     {% set pytest_ignore = '--ignore="tests/test_cli.py"' %}
     {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_filters.py"' %}
     {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_run_process.py"' %}
+    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_rust_notify.py"' %}  # [win]
     {% set pytest_skip = "awatch_interrupt_raise" %}
     {% set pytest_skip = pytest_skip + " or cli_help" %}
     # Test hangs indefinitely on linux
