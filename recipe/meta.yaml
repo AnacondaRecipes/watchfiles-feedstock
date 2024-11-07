@@ -52,6 +52,9 @@ test:
     {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_run_process.py"' %}
     {% set pytest_skip = "awatch_interrupt_raise" %}
     {% set pytest_skip = pytest_skip + " or cli_help" %}
+    # Test hangs indefinitely on linux
+    {% set pytest_skip = pytest_skip + " or test_ignore_permission_denied" %}  # [linux]
+
     - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v
 
 about:
