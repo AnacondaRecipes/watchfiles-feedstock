@@ -10,7 +10,7 @@ source:
   sha256: afb72325b74fa7a428c009c1b8be4b4d7c2afedafb2982827ef2156646df2fe1
 
 build:
-  number: 1
+  number: 2
   # maturin is missing on s390x.
   skip: true  # [s390x or py<=38]
   script:
