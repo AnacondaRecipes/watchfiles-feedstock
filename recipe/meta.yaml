@@ -1,24 +1,31 @@
 {% set name = "watchfiles" %}
-{% set version = "0.24.0" %}
+{% set version = "1.1.1" %}
+{% set pytest_ignore = '--ignore="tests/test_cli.py"' %}
+{% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_filters.py"' %}
+{% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_run_process.py"' %}
+{% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_rust_notify.py"' %}  # [win]
+{% set pytest_skip = "awatch_interrupt_raise" %}
+{% set pytest_skip = pytest_skip + " or cli_help" %}
+{% set pytest_skip = pytest_skip + " or test_ignore_permission_denied" %}  # [linux]
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: afb72325b74fa7a428c009c1b8be4b4d7c2afedafb2982827ef2156646df2fe1
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: a173cb5c16c4f40ab19cecf48a534c409f7ea983ab8fed0741304a1c0a31b3f2
 
 build:
-  number: 2
-  skip: true  # [py<=38]
+  number: 0
+  skip: true  # [py<39]
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
   entry_points:
     - watchfiles = watchfiles.cli:cli
   missing_dso_whitelist:  # [s390x]
-    - $RPATH/ld64.so.1    # [s390x] Known s390x `ld64.so` issue.
+    - $RPATH/ld64.so.1  # [s390x] Known s390x `ld64.so` issue.
 
 requirements:
   build:
@@ -48,15 +55,7 @@ test:
     - pip check
     - watchfiles -h
     # Requires dirty-equals, missing from defaults.
-    {% set pytest_ignore = '--ignore="tests/test_cli.py"' %}
-    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_filters.py"' %}
-    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_run_process.py"' %}
-    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_rust_notify.py"' %}  # [win]
-    {% set pytest_skip = "awatch_interrupt_raise" %}
-    {% set pytest_skip = pytest_skip + " or cli_help" %}
     # Test hangs indefinitely on linux
-    {% set pytest_skip = pytest_skip + " or test_ignore_permission_denied" %}  # [linux]
-
     - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v
 
 about:
@@ -66,7 +65,7 @@ about:
     Watchfiles is a simple, modern and high performance file watching and code reload in python.
     Underlying file system notifications are handled by the Notify rust library.
   dev_url: https://github.com/samuelcolvin/watchfiles
-  doc_url: https://watchfiles.helpmanual.io 
+  doc_url: https://watchfiles.helpmanual.io
   license: MIT
   license_family: MIT
   license_file:
