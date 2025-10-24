@@ -54,9 +54,11 @@ test:
     #{{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v
   requires:
     - pip
-    - pytest
-    - pytest-timeout
-    - pytest-mock
+    - pytest >=7.4.4
+    # relax lower bound for pytest-timeout
+    - pytest-timeout >=2.2.0
+    - pytest-mock >=3.14.0
+    - dirty-equals >=0.8.0
 
 about:
   home: https://watchfiles.helpmanual.io
