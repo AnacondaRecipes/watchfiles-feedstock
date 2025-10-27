@@ -1,0 +1,9 @@
+# Encountered problems while solving:
+#   - package rust_osx-arm64-1.89.0-h3d905bd_0 requires clang_osx-arm64 17.*, but none of the providers can be installed
+# Could not solve for environment specs
+# The following packages are incompatible
+# ├─ clang_osx-arm64 =20 * is requested and can be installed;
+# └─ rust_osx-arm64 =1.89.0 * is not installable because it requires
+#    └─ clang_osx-arm64 =17 *, which conflicts with any installable versions previously reported.
+c_compiler_version:  # [osx]
+  - 17               # [osx]

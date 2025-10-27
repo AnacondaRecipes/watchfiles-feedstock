@@ -1,27 +1,26 @@
 {% set name = "watchfiles" %}
-{% set version = "0.24.0" %}
+{% set version = "1.1.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: afb72325b74fa7a428c009c1b8be4b4d7c2afedafb2982827ef2156646df2fe1
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: a173cb5c16c4f40ab19cecf48a534c409f7ea983ab8fed0741304a1c0a31b3f2
 
 build:
-  number: 2
-  skip: true  # [py<=38]
+  number: 0
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
   entry_points:
     - watchfiles = watchfiles.cli:cli
-  missing_dso_whitelist:  # [s390x]
-    - $RPATH/ld64.so.1    # [s390x] Known s390x `ld64.so` issue.
+  skip: true  # [py<39]
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('rust') }}
   host:
@@ -33,31 +32,26 @@ requirements:
     - python
     - anyio >=3.0.0
 
+# E   FileNotFoundError: [Errno 2] No such file or directory: 'docs/cli_help.txt'
+# File docs/cli_help.txt was removed from the release tarball on PyPi and GitHub.
+{% set deselect_tests = " --deselect=tests/test_docs.py::test_cli_help" %}
 test:
   source_files:
     - tests
     - pyproject.toml
-  requires:
-    - pip
-    - pytest
-    - pytest-timeout
-    - pytest-mock
   imports:
     - watchfiles
   commands:
     - pip check
     - watchfiles -h
-    # Requires dirty-equals, missing from defaults.
-    {% set pytest_ignore = '--ignore="tests/test_cli.py"' %}
-    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_filters.py"' %}
-    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_run_process.py"' %}
-    {% set pytest_ignore = pytest_ignore + ' --ignore="tests/test_rust_notify.py"' %}  # [win]
-    {% set pytest_skip = "awatch_interrupt_raise" %}
-    {% set pytest_skip = pytest_skip + " or cli_help" %}
-    # Test hangs indefinitely on linux
-    {% set pytest_skip = pytest_skip + " or test_ignore_permission_denied" %}  # [linux]
-
-    - pytest {{ pytest_ignore }} -k "not ({{ pytest_skip }})" -v
+    - pytest -v {{ deselect_tests }}
+  requires:
+    - pip
+    - pytest >=7.4.4
+    # relax lower bound for pytest-timeout
+    - pytest-timeout >=2.2.0
+    - pytest-mock >=3.14.0
+    - dirty-equals >=0.8.0
 
 about:
   home: https://watchfiles.helpmanual.io
