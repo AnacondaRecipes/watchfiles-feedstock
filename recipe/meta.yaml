@@ -36,9 +36,6 @@ requirements:
 # File docs/cli_help.txt was removed from the release tarball on PyPi and GitHub.
 {% set deselect_tests = " --deselect=tests/test_docs.py::test_cli_help" %}
 
-{% set ignore_tests = "" %}
-{% set ignore_tests = ignore_tests + "test_rename" %}  # [win]
-
 test:
   source_files:
     - tests
