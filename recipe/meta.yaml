@@ -10,13 +10,13 @@ source:
   sha256: a173cb5c16c4f40ab19cecf48a534c409f7ea983ab8fed0741304a1c0a31b3f2
 
 build:
-  number: 0
+  number: 1
+  skip: true  # [py<39]
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
   entry_points:
     - watchfiles = watchfiles.cli:cli
-  skip: true  # [py<39]
 
 requirements:
   build:
@@ -35,6 +35,7 @@ requirements:
 # E   FileNotFoundError: [Errno 2] No such file or directory: 'docs/cli_help.txt'
 # File docs/cli_help.txt was removed from the release tarball on PyPi and GitHub.
 {% set deselect_tests = " --deselect=tests/test_docs.py::test_cli_help" %}
+
 test:
   source_files:
     - tests
@@ -60,7 +61,7 @@ about:
     Watchfiles is a simple, modern and high performance file watching and code reload in python.
     Underlying file system notifications are handled by the Notify rust library.
   dev_url: https://github.com/samuelcolvin/watchfiles
-  doc_url: https://watchfiles.helpmanual.io 
+  doc_url: https://watchfiles.helpmanual.io
   license: MIT
   license_family: MIT
   license_file:
