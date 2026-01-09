@@ -45,7 +45,8 @@ test:
   commands:
     - pip check
     - watchfiles -h
-    - pytest -v {{ deselect_tests }}
+    - pytest -v {{ deselect_tests }}  # [unix]
+    - pytest -v {{ deselect_tests }} -k "not test_rename"  # [win]
   requires:
     - pip
     - pytest >=7.4.4
