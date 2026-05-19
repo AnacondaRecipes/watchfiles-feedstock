@@ -1,17 +1,20 @@
 {% set name = "watchfiles" %}
-{% set version = "1.1.1" %}
+{% set version = "1.2.0" %}
+{% set deselect_tests = " --deselect=tests/test_docs.py::test_cli_help" %}
 
+# E   FileNotFoundError: [Errno 2] No such file or directory: 'docs/cli_help.txt'
+# File docs/cli_help.txt was removed from the release tarball on PyPi and GitHub.
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: a173cb5c16c4f40ab19cecf48a534c409f7ea983ab8fed0741304a1c0a31b3f2
+  sha256: c995fba777f1ea992f090f9236e9284cf7a5d1a0130dd5a3d82c598cacd76838
 
 build:
-  number: 1
-  skip: true  # [py<39]
+  number: 0
+  skip: true  # [py<310]
   script:
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
     - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
@@ -31,10 +34,6 @@ requirements:
   run:
     - python
     - anyio >=3.0.0
-
-# E   FileNotFoundError: [Errno 2] No such file or directory: 'docs/cli_help.txt'
-# File docs/cli_help.txt was removed from the release tarball on PyPi and GitHub.
-{% set deselect_tests = " --deselect=tests/test_docs.py::test_cli_help" %}
 
 test:
   source_files:
